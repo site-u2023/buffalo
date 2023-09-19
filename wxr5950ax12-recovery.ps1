@@ -11,3 +11,6 @@ Invoke-WebRequest -Uri "https://www.vercot.com/~serva/download/Serva_Community_v
 Expand-Archive -Path C:\openwrt\Serva.zip -DestinationPath C:\openwrt\Serva\ -Force
 Remove-item C:\openwrt\Serva.zip
 Invoke-WebRequest -Uri "https://github.com/site-u2023/buffalo/raw/main/Serva.ini" -OutFile "C:\openwrt\Serva\Serva.ini"
+Invoke-WebRequest -Uri "https://github.com/musashino205/firmware-wintools/releases/download/0.6.5.2/firmware-wintools_0.6.5.2.zip" -OutFile "C:\openwrt\firmware-wintools.zip"
+Expand-Archive -Path C:\openwrt\firmware-wintools.zip -DestinationPath C:\openwrt\ -Force
+Remove-item C:\openwrt\firmware-wintools.zip

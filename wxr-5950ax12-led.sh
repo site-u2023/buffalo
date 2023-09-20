@@ -39,3 +39,5 @@ uci set system.@led[6].trigger='netdev'
 uci set system.@led[6].dev='phy0-ap0'
 uci ad_list system.@led[6].mode='tx'
 uci ad_list system.@led[6].mode='rx'
+uci commit system
+service system restart

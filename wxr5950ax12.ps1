@@ -8,7 +8,19 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/site-u2023/buffalo/mai
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/site-u2023/buffalo/main/dhcp.ps1" -OutFile "C:\openwrt\ip\dhcp.ps1"
 Invoke-WebRequest -Uri "https://downloads.openwrt.org/releases/23.05.3/targets/ipq807x/generic/openwrt-23.05.3-ipq807x-generic-buffalo_wxr-5950ax12-initramfs-uImage.itb" -OutFile "C:\openwrt\tftpdroot\WXR-5950AX12-initramfs.uImage"
 Invoke-WebRequest -Uri "https://downloads.openwrt.org/releases/23.05.3/targets/ipq807x/generic/openwrt-23.05.3-ipq807x-generic-buffalo_wxr-5950ax12-squashfs-sysupgrade.bin" -OutFile "C:\openwrt\buffalo\openwrt-ipq807x-generic-buffalo_wxr-5950ax12-squashfs-sysupgrade.bin"
-Invoke-WebRequest -Uri "https://www.vercot.com/~serva/download/Serva_Community_v4.6.0-21120715.zip" -OutFile "C:\openwrt\Serva.zip"
+$LINKS = Invoke-WebRequest "https://www.vercot.com/~serva/download.html" -UseBasicParsing
+$LINKS_VERSION = $LINKS.Links | Where-Object {$_.href -like "*Serva_Community_*.zip*"} | Select-Object -ExpandProperty href
+$VERSION = ($LINKS_VERSION -split '/')[-1]
+Write-Host Version to install $VERSION
+Invoke-WebRequest -Uri "https://www.vercot.com/~serva/download/$VERSION" -OutFile "C:\openwrt\Serva.zip"
+while ($true){
+    if (Test-Path -Path "C:\openwrt\Serva.zip"){
+        break
+    }
+    Write-Host "File not found. Waiting..."
+    Start-Sleep -Seconds 3
+}
+
 Expand-Archive -Path C:\openwrt\Serva.zip -DestinationPath C:\openwrt\Serva\ -Force
 Remove-item C:\openwrt\Serva.zip
 Invoke-WebRequest -Uri "https://github.com/site-u2023/buffalo/raw/main/Serva.ini" -OutFile "C:\openwrt\Serva\Serva.ini"
